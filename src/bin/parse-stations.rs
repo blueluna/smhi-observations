@@ -33,9 +33,15 @@ fn main() {
                 station.owner,
                 station.owner_category,
                 station.measuring_network,
-                station.updated.format(FORMAT_DATE_TIME),
-                station.from.format(FORMAT_DATE),
-                station.to.format(FORMAT_DATE)
+                station
+                    .updated
+                    .with_timezone(&chrono::Local)
+                    .format(FORMAT_DATE_TIME),
+                station
+                    .from
+                    .with_timezone(&chrono::Local)
+                    .format(FORMAT_DATE),
+                station.to.with_timezone(&chrono::Local).format(FORMAT_DATE)
             );
         }
     }

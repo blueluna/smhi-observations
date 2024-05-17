@@ -38,7 +38,10 @@ async fn main() {
             println!(
                 "{:8} {} {}",
                 response.key,
-                response.updated.format(FORMAT_DATE_TIME),
+                response
+                    .updated
+                    .with_timezone(&chrono::Local)
+                    .format(FORMAT_DATE_TIME),
                 response.title
             );
         }

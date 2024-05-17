@@ -36,13 +36,24 @@ async fn main() {
                     position.latitude,
                     position.longitude,
                     position.height,
-                    position.from.format("%Y-%m-%d"),
-                    position.to.format("%Y-%m-%d")
+                    position
+                        .from
+                        .with_timezone(&chrono::Local)
+                        .format("%Y-%m-%d"),
+                    position.to.with_timezone(&chrono::Local).format("%Y-%m-%d")
                 );
             }
 
             for sample in data.value {
-                println!("{} {} {:?}", sample.date, sample.value, sample.quality);
+                println!(
+                    "{} {} {:?}",
+                    sample
+                        .date
+                        .with_timezone(&chrono::Local)
+                        .format("%Y-%m-%d %H:%M:%S"),
+                    sample.value,
+                    sample.quality
+                );
             }
         }
         Err(error) => {
