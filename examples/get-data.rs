@@ -50,7 +50,7 @@ async fn main() {
                     sample
                         .date
                         .with_timezone(&chrono::Local)
-                        .format("%Y-%m-%d %H:%M:%S"),
+                        .to_rfc3339(),
                     sample.value,
                     sample.quality
                 );

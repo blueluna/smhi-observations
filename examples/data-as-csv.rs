@@ -1,5 +1,6 @@
 use clap::Parser;
 use smhi_observations::model;
+use smhi_observations::model::Updated;
 use std::fs::File;
 use std::io::BufReader;
 
@@ -24,7 +25,7 @@ fn main() {
     println!("{}", data.station);
     println!("{}", data.period);
 
-    for position in data.position {
+    for position in data.position.iter() {
         println!(
             "{} {} {} {} - {}",
             position.latitude,
@@ -38,15 +39,20 @@ fn main() {
         );
     }
 
+    let parameter_label = data.parameter.key.to_string();
+
+    let update = data.updated();
+    let filename = format!("{}-{}-{}.csv", parameter_label, data.station.key, update.with_timezone(&chrono::Local).format("%Y%m%d-%H%M%S"));
+
+    let file = File::create_new(filename).unwrap();
+    let mut csv = csv::Writer::from_writer(file);
+    let _ = csv.write_record(["timestamp", &parameter_label]);
+
     for sample in data.value {
-        println!(
-            "{} {} {:?}",
-            sample
-                .date
-                .with_timezone(&chrono::Local)
-                .to_rfc3339(),
+        let record = vec![
+            sample.date.with_timezone(&chrono::Local).to_rfc3339(),
             sample.value,
-            sample.quality
-        );
+        ];
+        let _ = csv.write_record(&record);
     }
 }
