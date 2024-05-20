@@ -13,5 +13,5 @@ $ cargo run --example get-stations -- --parameter temperature
 Get temperature readings for the last day from station 97400 (Stockholm-Arlanda).
 
 ```shell
-$ cargo run --example get-stations -- --parameter temperature --station 97400 --period day
+$ cargo run --example get-data -- --parameter temperature --station 97400 --period day
 ```
